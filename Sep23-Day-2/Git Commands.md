@@ -1,4 +1,4 @@
-**BASIC COMMANDS**
+# BASIC COMMANDS
     git status -> check status
     git add [file-name] -> add a file to the staging area
     git commit -m "commit my changes msg" -> commit changes
