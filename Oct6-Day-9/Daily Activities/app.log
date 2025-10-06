@@ -1,0 +1,11 @@
+2025-10-06 14:32:25,976 DEBUG root this is debug message
+2025-10-06 14:32:25,977 INFO root Application started
+2025-10-06 14:32:25,977 WARNING root Log memory warning
+2025-10-06 14:32:25,977 ERROR root File not found error
+2025-10-06 14:32:25,977 CRITICAL root Critical system failure
+2025-10-06 14:33:47,397 INFO root Application started
+2025-10-06 14:33:47,397 WARNING root Log memory warning
+2025-10-06 14:33:47,398 ERROR root File not found error
+2025-10-06 14:33:47,398 CRITICAL root Critical system failure
+2025-10-06 14:34:42,766 ERROR root File not found error
+2025-10-06 14:34:42,766 CRITICAL root Critical system failure
