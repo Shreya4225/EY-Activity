@@ -1,0 +1,12 @@
+2025-10-17 15:41:09,649 - INFO - Enrollment pushed to queue: E007
+2025-10-17 15:41:09,649 - INFO - Enrollment pushed to queue: E008
+2025-10-17 15:47:58,588 - INFO - Enrollment pushed to queue: E007
+2025-10-17 15:47:58,625 - INFO - Consumer processed 1 enrollments.
+2025-10-17 16:27:26,102 - INFO - ETL process started.
+2025-10-17 16:27:26,123 - INFO - New enrollment processed: E001 - Student: S001 - Course: C101 - Status: Completed
+2025-10-17 16:27:26,124 - INFO - New enrollment processed: E002 - Student: S002 - Course: C102 - Status: In Progress
+2025-10-17 16:27:26,124 - INFO - New enrollment processed: E003 - Student: S003 - Course: C101 - Status: Completed
+2025-10-17 16:27:26,124 - INFO - New enrollment processed: E004 - Student: S001 - Course: C103 - Status: In Progress
+2025-10-17 16:27:26,125 - INFO - New enrollment processed: E005 - Student: S004 - Course: C104 - Status: In Progress
+2025-10-17 16:27:26,125 - INFO - New enrollment processed: E006 - Student: S005 - Course: C102 - Status: In Progress
+2025-10-17 16:27:26,125 - INFO - ETL completed successfully in 0.02 seconds.

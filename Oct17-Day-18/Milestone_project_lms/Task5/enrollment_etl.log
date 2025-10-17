@@ -1,0 +1,5 @@
+2025-10-17 23:05:56,011 - INFO - New enrollment received: E011
+2025-10-17 23:05:56,021 - INFO - Enrollment E011 processed successfully
+2025-10-17 23:05:56,021 - INFO - New enrollment received: E012
+2025-10-17 23:05:56,021 - ERROR - Error processing enrollment E012: StudentID S999 not found
+2025-10-17 23:05:56,024 - INFO - ETL completed: 1 records processed in 0.01 seconds

@@ -1,0 +1,5 @@
+2025-10-17 22:58:38,835 - INFO - Produced enrollment: E011
+2025-10-17 22:58:38,835 - INFO - Produced enrollment: E012
+2025-10-17 22:58:38,847 - INFO - Processed enrollment: E011 successfully
+2025-10-17 22:58:38,853 - INFO - Processed enrollment: E012 successfully
+2025-10-17 22:58:38,855 - INFO - ETL completed: 2 records processed in 0.02 seconds
