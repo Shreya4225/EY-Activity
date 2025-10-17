@@ -2,9 +2,7 @@ from fastapi import FastAPI, HTTPException
 import pandas as pd
 from pydantic import BaseModel
 
-# -----------------------------
 # Pydantic models
-# -----------------------------
 class Student(BaseModel):
     StudentID: str
     Name: str
@@ -17,20 +15,14 @@ class Course(BaseModel):
     Category: str
     Duration: int
 
-# -----------------------------
 # Create FastAPI instance
-# -----------------------------
 app = FastAPI()
 
-# -----------------------------
 # Load CSV data
-# -----------------------------
 students = pd.read_csv("students.csv").to_dict(orient="records")
 courses = pd.read_csv("courses.csv").to_dict(orient="records")
 
-# -----------------------------
 # STUDENT ENDPOINTS
-# -----------------------------
 @app.get("/students")
 def get_all_students():
     return {"students": students}
@@ -61,9 +53,7 @@ def delete_student(student_id: str):
             return {"message": "Student deleted successfully"}
     raise HTTPException(status_code=404, detail="Student not found")
 
-# -----------------------------
 # COURSE ENDPOINTS
-# -----------------------------
 @app.get("/courses")
 def get_all_courses():
     return {"courses": courses}

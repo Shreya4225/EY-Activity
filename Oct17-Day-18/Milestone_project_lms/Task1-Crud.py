@@ -1,17 +1,13 @@
 import pandas as pd
 
-# -----------------------------
-# 1️⃣ Load CSV files into DataFrames
-# -----------------------------
+#Load CSV files into DataFrames
 courses_file = 'courses.csv'
 students_file = 'students.csv'
 
 courses_df = pd.read_csv(courses_file)
 students_df = pd.read_csv(students_file)
 
-# -----------------------------
-# 2️⃣ Define CRUD functions
-# -----------------------------
+# Define CRUD functions
 def add_course():
     course_id = input("Enter CourseID: ")
     title = input("Enter Title: ")
@@ -58,9 +54,7 @@ def display_students():
     print("\nStudents Table:")
     print(students_df)
 
-# -----------------------------
-# 3️⃣ Main loop for user actions
-# -----------------------------
+#  Main loop for user actions
 while True:
     print("\nChoose an action:")
     print("1. Add a new course")

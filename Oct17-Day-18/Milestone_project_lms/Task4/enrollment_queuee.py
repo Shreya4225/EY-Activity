@@ -4,23 +4,17 @@ import threading
 import logging
 import time
 
-# -----------------------------
 # Logging setup
-# -----------------------------
 logging.basicConfig(
     filename="Task4\enrollment_processing.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# -----------------------------
 # In-memory queue
-# -----------------------------
 enrollment_queue = queue.Queue()
 
-# -----------------------------
 # Load CSVs
-# -----------------------------
 students = pd.read_csv("students.csv")
 courses = pd.read_csv("courses.csv")
 
@@ -29,24 +23,18 @@ try:
 except FileNotFoundError:
     processed_df = pd.DataFrame()
 
-# -----------------------------
 # Global counter
-# -----------------------------
 processed_count = 0
 
 
-# -----------------------------
 # Producer function
-# -----------------------------
 def producer(new_enrollments):
     for record in new_enrollments:
         enrollment_queue.put(record)
         logging.info(f"Produced enrollment: {record['EnrollmentID']}")
 
 
-# -----------------------------
 # Consumer function
-# -----------------------------
 def consumer():
     global processed_df, processed_count
     start_time = time.time()
@@ -84,9 +72,7 @@ def consumer():
     print(f"ETL completed: {processed_count} records processed")
 
 
-# -----------------------------
 # Example usage
-# -----------------------------
 new_enrollments = [
     {"EnrollmentID": "E011", "StudentID": "S001", "CourseID": "C101", "EnrollDate": "2025-10-11", "Progress": 90},
     {"EnrollmentID": "E012", "StudentID": "S003", "CourseID": "C103", "EnrollDate": "2025-10-12", "Progress": 50},

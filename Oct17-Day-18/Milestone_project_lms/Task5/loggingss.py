@@ -2,18 +2,14 @@ import pandas as pd
 import logging
 import time
 
-# -----------------------------
 # Logging setup
-# -----------------------------
 logging.basicConfig(
     filename="Task5\enrollment_etl.log",  # log file location
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# -----------------------------
 # Load CSVs
-# -----------------------------
 students = pd.read_csv("students.csv")
 courses = pd.read_csv("courses.csv")
 
@@ -23,9 +19,7 @@ except FileNotFoundError:
     processed_df = pd.DataFrame()
 
 
-# -----------------------------
 # Process a list of new enrollments
-# -----------------------------
 def process_enrollments(new_enrollments):
     global processed_df
     start_time = time.time()
@@ -65,9 +59,7 @@ def process_enrollments(new_enrollments):
     print(f"ETL completed: {processed_count} records processed in {runtime} seconds")
 
 
-# -----------------------------
 # Example usage
-# -----------------------------
 new_enrollments = [
     {"EnrollmentID": "E011", "StudentID": "S001", "CourseID": "C101", "EnrollDate": "2025-10-11", "Progress": 90},
     {"EnrollmentID": "E012", "StudentID": "S999", "CourseID": "C103", "EnrollDate": "2025-10-12", "Progress": 50},
