@@ -3,6 +3,7 @@
     git add [file-name] -> add a file to the staging area
     git commit -m "commit my changes msg" -> commit changes
     git remote -v -> view the remote repository of the currently working file or directory
+    git branch -m master main -> renaming your local branch from master to main -> means that master was you default branch but you want to change it to main
 
 # CREATING PROJECTS:
     git init -> Initialize a local repository
