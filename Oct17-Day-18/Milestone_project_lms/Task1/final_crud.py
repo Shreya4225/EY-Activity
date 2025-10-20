@@ -15,7 +15,7 @@ print("\nAfter updating duration of C101:")
 print(courses)
 
 # Delete a student
-students = students[students["StudentID"] != "S004"]
+students = students.drop(students[students["StudentID"] == "S004"].index)
 print("\nAfter deleting student S004:")
 print(students)
 

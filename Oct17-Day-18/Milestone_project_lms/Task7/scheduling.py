@@ -19,7 +19,7 @@ df = df.merge(courses_df, on="CourseID", how="left")
 df['CompletionStatus'] = df['Progress'].apply(lambda x: "Completed" if x >= 80 else "In Progress")
 df['EnrollMonth'] = pd.to_datetime(df['EnrollDate']).dt.month
 
-today = datetime.today().strftime('%Y%m%d')
+today = datetime.today().strftime('%Y%m%d') #Formats the date into a string in the pattern 2025/10/19
 report_file = f'daily_enrollment_report_{today}.csv'
 df.to_csv(report_file, index=False)
 logging.info(f"Daily report generated: {report_file}")

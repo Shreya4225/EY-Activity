@@ -6,6 +6,7 @@ courses = pd.read_csv("courses.csv")
 enrollments = pd.read_csv("enrollments.csv")
 
 # Merge enrollments with students
+# In ETL/reporting, we often want all enrollments, even if the data is incomplete, so we can log errors or handle missing data.
 df = enrollments.merge(students, on="StudentID", how="left")
 # Merge the result with courses
 df = df.merge(courses, on="CourseID", how="left")
