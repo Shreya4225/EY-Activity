@@ -1,8 +1,8 @@
 import pandas as pd
 
 #Load CSV files into DataFrames
-courses_file = 'courses.csv'
-students_file = 'students.csv'
+courses_file = '../courses.csv'
+students_file = '../students.csv'
 
 courses_df = pd.read_csv(courses_file)
 students_df = pd.read_csv(students_file)
