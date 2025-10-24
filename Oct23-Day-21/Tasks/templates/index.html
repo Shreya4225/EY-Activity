@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OpenRouter Chat UI</title>
+  <style>
+    :root{
+      --bg: #0f1724;
+      --card: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.06);
+      --accent: #60a5fa;
+      --muted: rgba(255,255,255,0.7);
+      --radius: 12px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071028 0%, #081226 100%);color:#e6eef8}
+    .wrap{max-width:900px;margin:36px auto;padding:28px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{margin:0 0 18px;color:var(--muted);font-size:13px}
+
+    .form-grid{display:grid;grid-template-columns:1fr;gap:14px}
+
+    /* translucent floating input */
+    .field{position:relative}
+    textarea.input, input.input{
+      width:100%;min-height:72px;padding:20px 14px 14px 14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);color:inherit;resize:vertical;outline:none;font-size:14px;backdrop-filter: blur(6px);
+    }
+    .field label{
+      position:absolute;left:14px;top:12px;padding:0 6px;pointer-events:none;font-size:12px;color:var(--muted);transition:all .18s ease;transform-origin:left top;background:transparent;
+    }
+    .input:focus + label, .input:not(:placeholder-shown) + label{
+      transform:translateY(-10px) scale(.92);opacity:0.95;color:var(--accent);
+      background:linear-gradient(90deg, rgba(11,76,153,0.0), rgba(11,76,153,0.0));
+      padding:0 6px
+    }
+
+    .row{display:flex;gap:12px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),#3b82f6);color:#04203a;font-weight:600;cursor:pointer
+    }
+    .btn[disabled]{opacity:.6;cursor:progress}
+
+    .output{margin-top:12px;padding:16px;border-radius:12px;background:var(--card);min-height:120px;white-space:pre-wrap}
+    .meta{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:8px}
+    .small{font-size:12px;color:var(--muted)}
+
+    .note{margin-top:12px;font-size:12px;color:var(--muted)}
+
+    @media(min-width:760px){
+      .form-grid{grid-template-columns:1fr 1fr}
+      .field.full{grid-column:1/-1}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>OpenRouter — Chat UI</h1>
+    <p class="lead">Enter a System message and a Human message, then send to your backend which will call OpenRouter / LangChain.</p>
+
+    <form id="chatForm" class="form-grid" onsubmit="return false;">
+      <div class="field full">
+        <textarea id="systemMsg" class="input" placeholder=" " rows="3">You are a helpful and concise AI assistant.</textarea>
+        <label for="systemMsg">System message</label>
+      </div>
+
+      <div class="field full">
+        <textarea id="humanMsg" class="input" placeholder=" " rows="4">&lt;s&gt;[INST] Explain in simple terms how convolutional neural networks work. [/INST]&lt;/s&gt;</textarea>
+        <label for="humanMsg">Human message</label>
+      </div>
+
+      <div class="field">
+        <input id="endpoint" class="input" placeholder=" " value="/api/chat" />
+        <label for="endpoint">Backend endpoint (POST)</label>
+      </div>
+
+      <div class="field">
+        <input id="maxTokens" class="input" placeholder=" " value="256" />
+        <label for="maxTokens">max_tokens (optional)</label>
+      </div>
+
+      <div class="field full">
+        <div class="row">
+          <button id="sendBtn" class="btn" type="button">Send</button>
+          <button id="clearBtn" class="btn" type="button" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600">Clear</button>
+        </div>
+        <div class="meta">
+          <span class="small">Requests are sent to your server; do not put secrets in client code.</span>
+          <span id="status" class="small">Ready</span>
+        </div>
+      </div>
+
+      <div class="field full">
+        <div id="output" class="output">Assistant response will appear here.</div>
+      </div>
+    </form>
+
+    <p class="note">How it works: This page sends a POST to the <code>endpoint</code> with JSON: <code>{ system: string, human: string, max_tokens?: number }</code>. Your backend should call LangChain/OpenRouter and return JSON <code>{ assistant: string }</code>.</p>
+  </main>
+
+  <script>
+    const sendBtn = document.getElementById('sendBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const systemMsg = document.getElementById('systemMsg');
+    const humanMsg = document.getElementById('humanMsg');
+    const endpoint = document.getElementById('endpoint');
+    const output = document.getElementById('output');
+    const statusEl = document.getElementById('status');
+    const maxTokensEl = document.getElementById('maxTokens');
+
+    function setStatus(t){ statusEl.textContent = t }
+
+    async function postChat(){
+      const payload = {
+        system: systemMsg.value.trim(),
+        human: humanMsg.value.trim(),
+      };
+      const mt = parseInt(maxTokensEl.value,10);
+      if(!isNaN(mt)) payload.max_tokens = mt;
+
+      const url = endpoint.value || '/api/chat';
+      sendBtn.disabled = true; setStatus('Sending...'); output.textContent = '';
+
+      try{
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if(!res.ok){
+          const txt = await res.text();
+          throw new Error('Server error: ' + res.status + '\n' + txt);
+        }
+
+        const data = await res.json();
+        // Expecting { assistant: string }
+        if(data.assistant) output.textContent = data.assistant;
+        else if(data.content) output.textContent = data.content;
+        else output.textContent = JSON.stringify(data, null, 2);
+
+        setStatus('Done');
+      }catch(err){
+        output.textContent = 'Error: ' + err.message;
+        setStatus('Error');
+      }finally{ sendBtn.disabled = false }
+    }
+
+    sendBtn.addEventListener('click', postChat);
+    clearBtn.addEventListener('click', ()=>{
+      output.textContent = 'Assistant response will appear here.';
+    });
+
+    // Allow ctrl+enter to send while focused in textarea
+    [systemMsg, humanMsg].forEach(el=>{
+      el.addEventListener('keydown', (e)=>{
+        if(e.ctrlKey && e.key === 'Enter') postChat();
+      })
+    })
+  </script>
+</body>
+</html>
