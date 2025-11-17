@@ -12,7 +12,7 @@ if not api_key:
     raise ValueError("OPENROUTER_API_KEY missing in .env")
 
 llm = ChatOpenAI(
-    model="mistralai/mistral-7b-instruct",
+    model="mistralai/llama-3-8b-instruct",
     temperature=0.7,
     max_tokens=256,
     api_key=api_key,
